@@ -1,4 +1,5 @@
-﻿using ProjectAnalyser;
+﻿using ProjectAnalyser.Utils;
+using ProjectAnalyser.Records;
 
 if (!ArgsChecker.CheckArgs(args))
 {
@@ -14,10 +15,12 @@ StartAnalyze();
 void StartAnalyze()
 {
     var fileTypes = new List<FileType>();
-    var allFilesOfTheFolder = FileUtils.GetAllSubFiles(args[0]);
+    List<string> allFilesOfTheFolder = FileUtils.GetAllSubFiles(args[0]).ToList();
+    PathExcluding.ExcludedFoldersFromFile(ref allFilesOfTheFolder);
 
     foreach (var filename in allFilesOfTheFolder)
     {
+        Console.WriteLine(filename);
         var fileExtension = FileUtils.GetFileExtension(filename);
         if (!FileTypeExists(fileTypes, fileExtension))
             fileTypes.Add(new FileType(fileExtension, 0));
@@ -39,7 +42,7 @@ void PrintResults(List<FileType> fileTypes)
 
 
 bool FileTypeExists(List<FileType> fileTypes, string extension) =>
-    fileTypes.Where(item => item.FileExtension == extension).Count() == 1;
+    fileTypes.Count(item => item.FileExtension == extension) == 1;
 
 int GetIndexOfFileTypeInListFromItsExtension(List<FileType> fileTypes, string extension) =>
     fileTypes.Select((value, index) => new { value, index }).Where(item => item.value.FileExtension == extension)

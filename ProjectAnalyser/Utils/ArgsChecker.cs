@@ -1,4 +1,4 @@
-﻿namespace ProjectAnalyser;
+﻿namespace ProjectAnalyser.Utils;
 
 public static class ArgsChecker
 {
@@ -7,9 +7,9 @@ public static class ArgsChecker
         CheckFolderAtFirstArgsExists(args);
     
 
-    private static bool CheckArgsCount(string[] args) =>
-        args.Count() > 0;
+    private static bool CheckArgsCount(IEnumerable<string> args) =>
+        args.Any();
 
-    private static bool CheckFolderAtFirstArgsExists(string[] args) =>
+    private static bool CheckFolderAtFirstArgsExists(IReadOnlyList<string> args) =>
         Directory.Exists(args[0]);
 }

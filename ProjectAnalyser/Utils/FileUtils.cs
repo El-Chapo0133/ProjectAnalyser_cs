@@ -1,10 +1,10 @@
-﻿namespace ProjectAnalyser;
+﻿namespace ProjectAnalyser.Utils;
 
 public static class FileUtils
 {
     public static string? ReadFile(string filename) =>
         !File.Exists(filename) ? null : new StreamReader(filename).ReadToEnd();
-    public static void WriteFile(string filename, string data)
+    public static void WriteFile(string? filename, string? data)
     {
         if (filename is null || data is null)
             return;
