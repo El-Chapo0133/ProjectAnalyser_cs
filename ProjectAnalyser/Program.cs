@@ -1,6 +1,9 @@
 ﻿using ProjectAnalyser.Utils;
 using ProjectAnalyser.Records;
 
+const bool VERBOSE = false;
+
+
 if (!ArgsChecker.CheckArgs(args))
 {
     Console.WriteLine(@$"There is an error with your first arg");
@@ -20,7 +23,8 @@ void StartAnalyze()
 
     foreach (var filename in allFilesOfTheFolder)
     {
-        Console.WriteLine(filename);
+        if (VERBOSE)
+            Console.WriteLine(filename);
         var fileExtension = FileUtils.GetFileExtension(filename);
         if (!FileTypeExists(fileTypes, fileExtension))
             fileTypes.Add(new FileType(fileExtension, 0));
