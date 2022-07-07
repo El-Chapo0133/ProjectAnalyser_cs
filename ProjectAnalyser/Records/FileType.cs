@@ -1,6 +1,4 @@
-﻿using System.Net.Mail;
-
-namespace ProjectAnalyser.Records;
+﻿namespace ProjectAnalyser.Records;
 
 public record FileType
 {
@@ -14,13 +12,13 @@ public record FileType
         FileExtension = extension;
         LinesCount = linesCount;
     }
-    
+
     public override string ToString()
     {
         return $@"{FileExtension}:{LinesCount}";
     }
     public string ToStringFormatted(int spacesNumber)
     {
-        return $@"{FileExtension + String.Concat(Enumerable.Repeat(" ", spacesNumber - FileExtension.Length))}:{LinesCount}";
+        return $@"{FileExtension + string.Concat(Enumerable.Repeat(" ", spacesNumber - FileExtension.Length))}:{LinesCount}";
     }
 }

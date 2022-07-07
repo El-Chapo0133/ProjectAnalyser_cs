@@ -9,7 +9,7 @@ public static class FileUtils
         if (filename is null || data is null)
             return;
 
-        StreamWriter writer = CreateStreamWriter(filename);
+        var writer = CreateStreamWriter(filename);
 
         var lines = data.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
 
@@ -28,15 +28,13 @@ public static class FileUtils
             Directory.CreateDirectory(directoryName);
 
         var fileStream = File.Create(filename);
-        if (closeStream)
-        {
-            fileStream.Close();
-            return null;
-        }
-        return fileStream;
+        if (!closeStream) return fileStream;
+        
+        fileStream.Close();
+        return null;
     }
     
-    public static string[] GetAllSubFiles(string path) =>
+    public static IEnumerable<string> GetAllSubFiles(string path) =>
         Directory.GetFiles(path, "*.*", SearchOption.AllDirectories);
     public static int GetLineCount(string path) =>
         File.ReadLines(path).Count();
