@@ -14,4 +14,5 @@ public static class FileUtils
         public static string GetFileExtension(string filename) =>
                 // Path.GetExtension(filename); // take the last . and after is the "Extension" eg. foo.Designer.cs -> .cs
                 string.Join('.', filename.Split('\\').Last().Split('.')[1..]); // take the first . and after is the "Extension" eg. foo.Designer.cs -> Designer.cs
+
 }
