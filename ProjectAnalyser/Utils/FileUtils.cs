@@ -2,53 +2,16 @@
 
 public static class FileUtils
 {
-    public static string? ReadFile(string filename) =>
-        !File.Exists(filename) ? null : new StreamReader(filename).ReadToEnd();
-    public static void WriteFile(string? filename, string? data)
-    {
-        if (filename is null || data is null)
-            return;
+        public static IEnumerable<string> GetAllSubFiles(string path) =>
+                Directory.GetFiles(path, "*.*", SearchOption.AllDirectories);
 
-        StreamWriter writer = CreateStreamWriter(filename);
+        public static int GetLineCount(string path) =>
+                File.ReadLines(path).Count();
 
-        var lines = data.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
-
-        foreach (var line in lines)
-            writer.WriteLine(line);
+        public static int GetCharsCount(string path) =>
+                File.ReadAllText(path).Length;
         
-        writer.Close();
-    }
-    public static FileStream? CreateFile(string filename, bool closeStream)
-    {
-        var directoryName = GetFolder(filename);
-        if (directoryName is null)
-            return null;
-
-        if (!FolderExists(directoryName))
-            Directory.CreateDirectory(directoryName);
-
-        var fileStream = File.Create(filename);
-        if (closeStream)
-        {
-            fileStream.Close();
-            return null;
-        }
-        return fileStream;
-    }
-    
-    public static string[] GetAllSubFiles(string path) =>
-        Directory.GetFiles(path, "*.*", SearchOption.AllDirectories);
-    public static int GetLineCount(string path) =>
-        File.ReadLines(path).Count();
-    public static bool FileExists(string filename) =>
-        File.Exists(filename);
-    private static bool FolderExists(string filename) =>
-        Directory.Exists(filename);
-    private static string? GetFolder(string filename) =>
-        Path.GetDirectoryName(filename);
-    private static StreamWriter CreateStreamWriter(string filename) =>
-        !File.Exists(filename) ? new StreamWriter(File.Create(filename)) : new StreamWriter(filename);
-    public static string GetFileExtension(string filename) =>
-        Path.GetExtension(filename);
-    // string.Join('.', filename.Split('.')[1..]);
+        public static string GetFileExtension(string filename) =>
+                // Path.GetExtension(filename); // take the last . and after is the "Extension" eg. foo.Designer.cs -> .cs
+                string.Join('.', filename.Split('\\').Last().Split('.')[1..]); // take the first . and after is the "Extension" eg. foo.Designer.cs -> Designer.cs
 }
